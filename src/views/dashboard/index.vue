@@ -16,10 +16,10 @@
     <div class="charts-header">
       <h2>健康指数统计</h2>
     </div>
-<!--    <div class="charts-container">-->
-<!--      <BarChart />-->
-<!--      <LineChart chart-data="" />-->
-<!--    </div>-->
+    <!--        <div class="charts-container">-->
+    <!--          <BarChart />-->
+    <!--          <LineChart chart-data="" />-->
+    <!--        </div>-->
     <div class="charts-footer">
       <p>@ 健康管理系统 2024</p>
     </div>
@@ -46,6 +46,7 @@ export default {
   },
   mounted() {
     service.get('/user/info', this.formData).then(res => {
+      console.log(res)
     })
   },
   methods: {

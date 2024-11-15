@@ -7,7 +7,7 @@ import { getToken } from '@/utils/auth'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // URL = 基础URL + 请求URL
   // withCredentials: true, // 跨域请求时发送 cookies
-  timeout: 5000 // 请求超时时间
+  timeout: 500000 // 请求超时时间
 })
 
 // 请求拦截器
@@ -44,8 +44,8 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    // 如果返回体状态码不是 200，则判断为错误
-    if (res.code !== 200) {
+    // 如果返回体状态码不是 ok，则判断为错误
+    if (res.status !== 'ok') {
       Message({
         message: res.message || '错误',
         type: 'error',
@@ -61,10 +61,10 @@ service.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       const res = error.response.data
 
-      // 50008: 非法 token; 50012: 其他客户端已登录; 50014: token 过期;
+      // 50008: 非法 token; 50012: 其他客户端已登录; 50014: 失效 token ;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // 重新登录
-        MessageBox.confirm('您已登出，您可以取消以停留在此页面，或重新登录', '确认登出', {
+        MessageBox.confirm('您的会话已过期或在其他设备上登录。您可以选择取消以停留在此页面，或重新登录以继续访问。', '会话已过期', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'
@@ -74,14 +74,14 @@ service.interceptors.response.use(
           })
         })
       }
+    } else {
+      Message({
+        message: error.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(error)
     }
-    // console.log('err' + error) // 用于调试
-    // Message({
-    //   message: error.message,
-    //   type: 'error',
-    //   duration: 5 * 1000
-    // })
-    return Promise.reject(error)
   }
 )
 
