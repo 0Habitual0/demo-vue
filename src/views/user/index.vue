@@ -1,0 +1,226 @@
+<template>
+  <div class="container">
+    <div class="filter-box">
+      <el-form ref="queryForm" :model="params" label-width="100px" class="clearfix">
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="登录账号" style="font-size: 20px">
+              <el-input v-model="params.username" placeholder="请输入登录账号" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="账号昵称">
+              <el-input v-model="params.nickName" placeholder="请输入昵称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="性别">
+              <el-select v-model="params.sex" clearable placeholder="请选择性别">
+                <el-option label="男" value="男" />
+                <el-option label="女" value="女" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="电话号">
+              <el-input v-model="params.tel" placeholder="请输入电话号" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="邮箱">
+              <el-input v-model="params.email" placeholder="请输入邮箱地址" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="状态">
+              <el-select v-model="params.status" clearable placeholder="请选择状态">
+                <el-option label="启用" :value="1" />
+                <el-option label="禁用" :value="0" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <el-form>
+        <el-form-item class="flex-right">
+          <el-button type="primary" @click="onSubmit()">查询</el-button>
+          <el-button @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="pagination-box">
+      <!--表格数据-->
+      <el-table
+        v-loading="loading"
+        element-loading-text="表格数据加载中..."
+        :data="dataList"
+        border="border"
+        row-key="id"
+        default-expand-all
+      >
+        <el-table-column
+          width="160px"
+          prop="username"
+          label="登录名"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          width="160px"
+          prop="nickName"
+          label="姓名"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          width="160px"
+          prop="sex"
+          label="性别"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          width="160px"
+          prop="age"
+          label="年龄"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          width="160px"
+          prop="email"
+          label="邮箱"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          width="160px"
+          prop="tel"
+          label="电话号"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          prop="status"
+          label="状态"
+          show-overflow-tooltip
+          align="center"
+        >
+          <template v-slot="scope">
+            <span :class="scope.row.status === 1 ? 'status-enabled' : 'status-disabled'"> {{ scope.row.status === 1 ? '启用' : '禁用' }} </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="180px"
+          prop="createTime"
+          label="创建时间"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          width="180px"
+          prop="updateTime"
+          label="更新时间"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column show-overflow-tooltip align="center" label="操作">
+          <template v-slot="scope">
+            <el-button
+              type="text"
+              style=" margin-left: 8px"
+              @click="onSubmit(scope.row)"
+            >查看</el-button>
+            <el-button
+              type="text"
+              style=" margin-left: 8px"
+              @click="onSubmit(scope.row)"
+            >编辑</el-button>
+            <el-button
+              type="text"
+              style=" margin-left: 8px"
+              @click="onSubmit(scope.row)"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!--分页条-->
+      <el-pagination
+        popper-class="mod-pagination-select"
+        layout="slot, total, sizes, prev, pager, next, jumper"
+        :current-page="page.current"
+        :page-sizes="[5, 10, 20, 50, 100, 200]"
+        :page-size="page.size"
+        :total="page.totalCount"
+        @size-change="handlePageSizeChange"
+        @current-change="handlePageCurrentChange"
+      >
+        <span key="1">
+          当前第 {{ page.current }}/{{ page.pages }} 页
+        </span>
+      </el-pagination>
+    </div>
+  </div>
+</template>
+
+<script>
+import service from '@/utils/request'
+
+export default {
+  data() {
+    return {
+      params: {},
+      loading: false,
+      dataList: [],
+      page: {
+        current: 1,
+        size: 10,
+        totalCount: 1,
+        pages: 0
+      }
+    }
+  },
+  computed: {
+  },
+  created() {
+    this.query()
+  },
+  methods: {
+    onSubmit() {
+      this.page.current = 1
+      this.query()
+    },
+    resetQuery() {
+      this.params = {}
+    },
+    query() {
+      this.loading = true
+      this.params.pageNum = this.page.current
+      this.params.pageSize = this.page.size
+      service.post('/user/selectByPage', this.params).then(res => {
+        this.dataList = res.data.content
+        this.page.pages = res.data.totalPages
+        this.page.totalCount = res.data.totalElements
+        this.loading = false
+      }).catch(error => {
+        console.log(error)
+        this.loading = false
+      })
+    },
+    handlePageSizeChange(val) {
+      this.page.size = val
+      this.query()
+    },
+    handlePageCurrentChange(val) {
+      this.page.current = val
+      this.query()
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+
+</style>

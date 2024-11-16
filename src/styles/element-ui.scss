@@ -47,3 +47,15 @@
 .el-range-separator {
   box-sizing: content-box;
 }
+
+.el-button--primary {
+  background-color: #67C23A; /* 绿色背景色 */
+  border-color: #67C23A; /* 绿色边框色 */
+  color: #fff; /* 白色文字 */
+
+  &:hover,
+  &:focus {
+    background-color: #5da331; /* 绿色的hover状态 */
+    border-color: #5da331; /* 绿色的hover状态 */
+  }
+}

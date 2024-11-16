@@ -1,0 +1,73 @@
+.container {
+  overflow-y: auto; /* 启用垂直滚动 */
+  max-height: calc(100vh - 50px); /* 设置最大高度 */
+  padding-top: 20px; /* 增加顶部内边距 */
+  padding-bottom: 20px; /* 增加底部内边距 */
+}
+
+.filter-box {
+  border: 2px solid #ddd; /* 设置边框 */
+  padding: 20px; /* 设置内边距 */
+  border-radius: 8px; /* 设置圆角 */
+  background-color: #f9f9f9; /* 设置背景颜色 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 设置阴影 */
+  position: relative; /* 改为相对定位 */
+  top: 5%; /* 距离顶部5% */
+  left: 50%; /* 水平居中 */
+  transform: translateX(-50%); /* 水平居中修正 */
+  width: 80vw; /* 宽度占屏幕的80% */
+  height: 20vh; /* 高度占屏幕的20% */
+  margin-bottom: 3vh; /* 增加底部间距 */
+}
+
+.pagination-box {
+  border: 2px solid #ddd; /* 设置边框 */
+  padding: 20px; /* 设置内边距 */
+  border-radius: 8px; /* 设置圆角 */
+  background-color: #f9f9f9; /* 设置背景颜色 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 设置阴影 */
+  position: relative; /* 改为相对定位 */
+  top: 30%; /* 距离顶部30% */
+  left: 50%; /* 水平居中 */
+  transform: translateX(-50%); /* 水平居中修正 */
+  width: 80vw; /* 宽度占屏幕的80% */
+  min-height: 60vh; /* 最小高度占屏幕的60% */
+  height: auto; /* 高度自动调整 */
+
+  .el-table {
+    margin-bottom: 50px; /* 与下面的元素保持50px的距离 */
+  }
+
+  .el-pagination {
+    position: absolute; /* 绝对定位 */
+    bottom: 20px; /* 距离底部20px */
+    right: 20px; /* 距离右侧20px */
+    text-align: right; /* 右对齐 */
+    width: calc(100% - 40px); /* 确保宽度适应父元素 */
+  }
+}
+
+.flex-right {
+  display: flex; /* 使用flex布局 */
+  justify-content: flex-end; /* 将内容靠右对齐 */
+}
+
+.status-enabled {
+  display: inline-block;
+  padding: 5px 10px;
+  color: #fff; /* 白色文字 */
+  background-color: rgba(46, 204, 113); /* 浅绿色背景 */
+  border-radius: 3px; /* 圆角 */
+  text-align: center; /* 居中对齐 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 轻微阴影增加立体感 */
+}
+
+.status-disabled {
+  display: inline-block;
+  padding: 5px 10px;
+  color: #fff; /* 白色文字 */
+  background-color: rgba(231, 76, 60); /* 浅红色背景 */
+  border-radius: 3px; /* 圆角 */
+  text-align: center; /* 居中对齐 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 轻微阴影增加立体感 */
+}
