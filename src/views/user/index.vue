@@ -4,7 +4,7 @@
       <el-form ref="queryForm" :model="params" label-width="100px" class="clearfix">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="登录账号" style="font-size: 20px">
+            <el-form-item label="登录账号">
               <el-input v-model="params.username" placeholder="请输入登录账号" />
             </el-form-item>
           </el-col>
@@ -61,48 +61,49 @@
         default-expand-all
       >
         <el-table-column
-          width="160px"
+          min-width="10%"
           prop="username"
           label="登录名"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
-          width="160px"
+          min-width="10%"
           prop="nickName"
           label="姓名"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
-          width="160px"
+          min-width="10%"
           prop="sex"
           label="性别"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
-          width="160px"
+          min-width="10%"
           prop="age"
           label="年龄"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
-          width="160px"
+          min-width="10%"
           prop="email"
           label="邮箱"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
-          width="160px"
+          min-width="10%"
           prop="tel"
           label="电话号"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
+          min-width="10%"
           prop="status"
           label="状态"
           show-overflow-tooltip
@@ -113,35 +114,40 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="180px"
+          min-width="10%"
           prop="createTime"
           label="创建时间"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
-          width="180px"
+          min-width="10%"
           prop="updateTime"
           label="更新时间"
           show-overflow-tooltip
           align="center"
         />
-        <el-table-column show-overflow-tooltip align="center" label="操作">
+        <el-table-column
+          min-width="15%"
+          show-overflow-tooltip
+          align="center"
+          label="操作"
+        >
           <template v-slot="scope">
             <el-button
               type="text"
               style=" margin-left: 8px"
-              @click="onSubmit(scope.row)"
+              @click="showUserDetails(scope.row)"
             >查看</el-button>
             <el-button
               type="text"
               style=" margin-left: 8px"
-              @click="onSubmit(scope.row)"
+              @click="showUserEdits(scope.row)"
             >编辑</el-button>
             <el-button
               type="text"
               style=" margin-left: 8px"
-              @click="onSubmit(scope.row)"
+              @click="onDelete(scope.row)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -162,13 +168,21 @@
         </span>
       </el-pagination>
     </div>
+    <!--用户详情页-->
+    <UserDetail
+      :visible.sync="showDialog"
+      :user-data="selectedUserData"
+    />
+    <!--用户编辑页 TODO -->
   </div>
 </template>
 
 <script>
 import service from '@/utils/request'
+import UserDetail from '@/views/user/components/userDetail.vue'
 
 export default {
+  components: { UserDetail },
   data() {
     return {
       params: {},
@@ -176,10 +190,12 @@ export default {
       dataList: [],
       page: {
         current: 1,
-        size: 10,
+        size: 5,
         totalCount: 1,
         pages: 0
-      }
+      },
+      showDialog: false,
+      selectedUserData: {}
     }
   },
   computed: {
@@ -201,8 +217,8 @@ export default {
       this.params.pageSize = this.page.size
       service.post('/user/selectByPage', this.params).then(res => {
         this.dataList = res.data.content
-        this.page.pages = res.data.totalPages
-        this.page.totalCount = res.data.totalElements
+        this.page.pages = res.data.page.totalPages
+        this.page.totalCount = res.data.page.totalElements
         this.loading = false
       }).catch(error => {
         console.log(error)
@@ -216,6 +232,27 @@ export default {
     handlePageCurrentChange(val) {
       this.page.current = val
       this.query()
+    },
+    showUserDetails(userData) {
+      this.selectedUserData = userData
+      this.showDialog = true
+    },
+    showUserEdits(userData) {
+      // TODO
+    },
+    onDelete(userData) {
+      this.$confirm('此操作将删除该账号, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        service.get('/user/delete?id=' + userData.id).then(res => {
+          this.onSubmit()
+        }).catch(error => {
+          console.log(error)
+          this.loading = false
+        })
+      })
     }
   }
 }

@@ -163,12 +163,15 @@ export const constantRoutes = [
   {
     path: '/user',
     component: Layout,
+    redirect: '/user/userList',
+    name: 'User',
+    meta: { title: '用户管理', icon: 'user' },
     children: [
       {
-        path: 'index',
-        name: 'User',
+        path: 'userList',
+        name: 'userList',
         component: () => import('@/views/user/index'),
-        meta: { title: '用户管理', icon: 'user' }
+        meta: { title: '用户列表', icon: 'form' }
       }
     ]
   },
