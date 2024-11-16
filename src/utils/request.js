@@ -61,10 +61,10 @@ service.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       const res = error.response.data
 
-      // 50008: 非法 token; 50012: 其他客户端已登录; 50014: 失效 token ;
+      // 50008: 非法 token | 50012: 其他客户端已登录 | 50014: 失效 token
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // 重新登录
-        MessageBox.confirm('您的会话已过期或在其他设备上登录。您可以选择取消以停留在此页面，或重新登录以继续访问。', '会话已过期', {
+        MessageBox.confirm(res.message, '会话状态', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'
