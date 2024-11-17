@@ -34,6 +34,12 @@
   min-height: 60vh; /* 最小高度占屏幕的60% */
   height: auto; /* 高度自动调整 */
 
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px; /* 按钮之间的间距 */
+  }
+
   .el-table {
     width: 100%;
     margin-bottom: 50px; /* 与下面的元素保持50px的距离 */

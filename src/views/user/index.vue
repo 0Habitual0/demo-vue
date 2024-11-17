@@ -41,16 +41,31 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col>
+            <el-form-item class="flex-right">
+              <el-button type="primary" @click="onSubmit()">查询</el-button>
+              <el-button @click="resetQuery">重置</el-button>
+            </el-form-item>
+          </el-col>
         </el-row>
-      </el-form>
-      <el-form>
-        <el-form-item class="flex-right">
-          <el-button type="primary" @click="onSubmit()">查询</el-button>
-          <el-button @click="resetQuery">重置</el-button>
-        </el-form-item>
       </el-form>
     </div>
     <div class="pagination-box">
+      <div>
+        <el-row type="flex" justify="space-between" align="middle">
+          <el-col>
+            <div>
+              <label>用户列表</label>
+              <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
+            </div>
+          </el-col>
+          <el-col>
+            <div class="button-group">
+              <el-button @click="showUserDetails">新增</el-button>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
       <!--表格数据-->
       <el-table
         v-loading="loading"
@@ -170,7 +185,7 @@
     </div>
     <!--用户详情页-->
     <UserDetail
-      :visible.sync="showDialog"
+      :visible.sync="showDetailDialog"
       :user-data="selectedUserData"
     />
     <!--用户编辑页 TODO -->
@@ -194,7 +209,7 @@ export default {
         totalCount: 1,
         pages: 0
       },
-      showDialog: false,
+      showDetailDialog: false,
       selectedUserData: {}
     }
   },
@@ -235,7 +250,7 @@ export default {
     },
     showUserDetails(userData) {
       this.selectedUserData = userData
-      this.showDialog = true
+      this.showDetailDialog = true
     },
     showUserEdits(userData) {
       // TODO
