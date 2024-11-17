@@ -43,13 +43,30 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
+      <div class="options">
+        <el-button type="text" @click="showRegister()">注册账号</el-button>
+        <el-button type="text" @click="showRecoverPassword()">找回密码</el-button>
+      </div>
+
     </el-form>
+    <div>
+      <Register
+        :visible.sync="showRegisterDialog"
+      />
+      <RecoverPassword
+        :visible.sync="showRecoverPasswordDialog"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import Register from '@/views/login/components/register.vue'
+import RecoverPassword from '@/views/login/components/recoverPassword.vue'
+
 export default {
   name: 'Login',
+  components: { Register, RecoverPassword },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!value) {
@@ -73,7 +90,9 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      showRegisterDialog: false,
+      showRecoverPasswordDialog: false
     }
   },
   watch: {
@@ -109,6 +128,12 @@ export default {
           return false
         }
       })
+    },
+    showRegister() {
+      this.showRegisterDialog = true
+    },
+    showRecoverPassword() {
+      this.showRecoverPasswordDialog = true
     }
   }
 }
@@ -130,33 +155,35 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
+  .login-form {
+    .el-input {
+      display: inline-block;
       height: 47px;
-      caret-color: $cursor;
+      width: 85%;
 
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
+      input {
+        background: transparent;
+        border: 0px;
+        -webkit-appearance: none;
+        border-radius: 0px;
+        padding: 12px 5px 12px 15px;
+        color: $light_gray;
+        height: 47px;
+        caret-color: $cursor;
+
+        &:-webkit-autofill {
+          box-shadow: 0 0 0px 1000px $bg inset !important;
+          -webkit-text-fill-color: $cursor !important;
+        }
       }
     }
-  }
 
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
+    .el-form-item {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      color: #454545;
+    }
   }
 }
 </style>

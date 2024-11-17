@@ -14,8 +14,11 @@
       <el-form-item label="用户名">
         <el-input v-model="data.nickName" disabled />
       </el-form-item>
-      <el-form-item label="性别">
-        <el-input v-model="data.sex" disabled />
+      <el-form-item prop="sex" label="性别">
+        <el-select v-model="data.sex">
+          <el-option label="男" value="男" />
+          <el-option label="女" value="女" />
+        </el-select>
       </el-form-item>
       <el-form-item label="年龄">
         <el-input-number v-model="data.age" disabled />

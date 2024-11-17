@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="新增用户"
+    title="注册账号"
     :visible.sync="localVisible"
     destroy-on-close
   >
@@ -29,23 +29,6 @@
       <el-form-item prop="tel" label="电话号">
         <el-input v-model="data.tel" />
       </el-form-item>
-      <el-form-item prop="role" label="角色">
-        <el-select v-model="data.role">
-          <el-option label="管理员" value="管理员" />
-          <el-option label="普通用户" value="普通用户" />
-        </el-select>
-      </el-form-item>
-      <el-form-item prop="status" label="状态">
-        <el-switch
-          v-model="data.status"
-          :active-value="1"
-          :inactive-value="0"
-          active-text="启用"
-          inactive-text="禁用"
-          active-color="#2ECC71"
-          inactive-color="#E74C3C"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
@@ -73,9 +56,7 @@ export default {
         sex: [{ required: true, message: '请输入性别', trigger: 'blur' }],
         age: [{ required: true, message: '请输入年龄', trigger: 'blur' }],
         email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
-        tel: [{ required: true, message: '请输入电话号', trigger: 'blur' }],
-        role: [{ required: true, message: '请选择角色', trigger: 'change' }],
-        status: [{ required: true, message: '请选择状态', trigger: 'change' }]
+        tel: [{ required: true, message: '请输入电话号', trigger: 'blur' }]
       },
       localVisible: this.visible,
       data: {}
@@ -94,11 +75,18 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
-          service.post('/user/save', this.data).then(res => {
+          this.data.role = '普通用户'
+          this.data.status = 1
+          service.post('/user/register', this.data).then(res => {
             this.loading = false
             this.data = {}
             this.localVisible = false
-            this.$emit('onSubmit')
+            if (res.status === 'ok') {
+              this.$message({
+                message: res.data,
+                type: 'success'
+              })
+            }
           }).catch(error => {
             console.log(error)
             this.loading = false
