@@ -1,23 +1,30 @@
 .container {
   overflow-y: auto; /* 启用垂直滚动 */
-  max-height: calc(100vh - 50px); /* 设置最大高度 */
   padding-top: 20px; /* 增加顶部内边距 */
   padding-bottom: 20px; /* 增加底部内边距 */
 }
 
 .filter-box {
   border: 2px solid #ddd; /* 设置边框 */
-  padding: 20px; /* 设置内边距 */
+  padding: 20px 20px 0; /* 设置内边距 */
   border-radius: 8px; /* 设置圆角 */
   background-color: #f9f9f9; /* 设置背景颜色 */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 设置阴影 */
   position: relative; /* 改为相对定位 */
-  top: 5%; /* 距离顶部5% */
   left: 50%; /* 水平居中 */
   transform: translateX(-50%); /* 水平居中修正 */
   width: 80vw; /* 宽度占屏幕的80% */
-  height: 20vh; /* 高度占屏幕的20% */
+  min-height: 20vh; /* 最小高度 */
   margin-bottom: 3vh; /* 增加底部间距 */
+
+  .el-select {
+    width: 100%;
+  }
+
+  .flex-right {
+    display: flex; /* 使用flex布局 */
+    justify-content: flex-end; /* 将内容靠右对齐 */
+  }
 }
 
 .pagination-box {
@@ -31,12 +38,12 @@
   left: 50%; /* 水平居中 */
   transform: translateX(-50%); /* 水平居中修正 */
   width: 80vw; /* 宽度占屏幕的80% */
-  min-height: 60vh; /* 最小高度占屏幕的60% */
+  min-height: 50vh; /* 最小高度占屏幕的50% */
   height: auto; /* 高度自动调整 */
 
   .button-group {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end; /* 按钮靠右对齐 */
     gap: 10px; /* 按钮之间的间距 */
   }
 
@@ -52,11 +59,6 @@
     text-align: right; /* 右对齐 */
     width: calc(100% - 40px); /* 确保宽度适应父元素 */
   }
-}
-
-.flex-right {
-  display: flex; /* 使用flex布局 */
-  justify-content: flex-end; /* 将内容靠右对齐 */
 }
 
 .status-enabled {

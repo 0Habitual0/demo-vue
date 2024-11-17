@@ -41,7 +41,9 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
             <el-form-item class="flex-right">
               <el-button type="primary" @click="onSubmit()">查询</el-button>
               <el-button @click="resetQuery">重置</el-button>
