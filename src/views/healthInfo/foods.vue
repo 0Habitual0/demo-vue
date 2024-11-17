@@ -185,17 +185,17 @@
         </span>
       </el-pagination>
     </div>
-    <!--新增页组件-->
+    <!--用户新增页组件-->
     <UserAdd
       :visible.sync="showAddDialog"
       @onSubmit="onSubmit"
     />
-    <!--详情页组件-->
+    <!--用户详情页组件-->
     <UserDetail
       :visible.sync="showDetailDialog"
       :data="data"
     />
-    <!--编辑页组件-->
+    <!--用户编辑页组件-->
     <UserEdit
       :visible.sync="showEditDialog"
       :data="data"

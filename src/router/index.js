@@ -164,7 +164,7 @@ export const constantRoutes = [
     path: '/user',
     component: Layout,
     redirect: '/user/userList',
-    name: 'User',
+    name: 'user',
     meta: { title: '用户管理', icon: 'user' },
     children: [
       {
@@ -172,6 +172,28 @@ export const constantRoutes = [
         name: 'userList',
         component: () => import('@/views/user/index'),
         meta: { title: '用户列表', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/healthInfo',
+    component: Layout,
+    redirect: '/healthInfo/sports',
+    name: 'healthInfo',
+    meta: { title: '健康资讯', icon: 'user' },
+    children: [
+      {
+        path: 'sports',
+        name: 'sports',
+        component: () => import('@/views/healthInfo/sports'),
+        meta: { title: '运动资讯', icon: 'form' }
+      },
+      {
+        path: 'foods',
+        name: 'foods',
+        component: () => import('@/views/healthInfo/foods'),
+        meta: { title: '饮食推荐', icon: 'form' }
       }
     ]
   },

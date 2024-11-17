@@ -4,41 +4,18 @@
       <el-form ref="queryForm" :model="params" label-width="100px" class="clearfix">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="登录账号">
-              <el-input v-model="params.username" placeholder="请输入登录账号" />
+            <el-form-item label="标题">
+              <el-input v-model="params.title" placeholder="请输入标题" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="用户名">
-              <el-input v-model="params.nickName" placeholder="请输入昵称" />
+            <el-form-item label="创建人">
+              <el-input v-model="params.createBy" placeholder="请输入创建人" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="性别">
-              <el-select v-model="params.sex" clearable placeholder="请选择性别">
-                <el-option label="男" value="男" />
-                <el-option label="女" value="女" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="电话号">
-              <el-input v-model="params.tel" placeholder="请输入电话号" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="邮箱">
-              <el-input v-model="params.email" placeholder="请输入邮箱地址" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="状态">
-              <el-select v-model="params.status" clearable placeholder="请选择状态">
-                <el-option label="启用" :value="1" />
-                <el-option label="禁用" :value="0" />
-              </el-select>
+            <el-form-item label="更新人">
+              <el-input v-model="params.updateBy" placeholder="请输入更新人" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -57,7 +34,7 @@
         <el-row type="flex" justify="space-between" align="middle">
           <el-col>
             <div>
-              <label>用户列表</label>
+              <label>运动资讯列表</label>
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
@@ -79,61 +56,36 @@
       >
         <el-table-column
           min-width="10%"
-          prop="username"
-          label="登录名"
+          prop="titleImage"
+          label="标题图片"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
           min-width="10%"
-          prop="nickName"
-          label="用户名"
+          prop="title"
+          label="标题"
           show-overflow-tooltip
           align="center"
         />
         <el-table-column
           min-width="10%"
-          prop="sex"
-          label="性别"
+          prop="createBy"
+          label="创建人"
           show-overflow-tooltip
           align="center"
         />
-        <el-table-column
-          min-width="10%"
-          prop="age"
-          label="年龄"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="email"
-          label="邮箱"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="tel"
-          label="电话号"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="status"
-          label="状态"
-          show-overflow-tooltip
-          align="center"
-        >
-          <template v-slot="scope">
-            <span :class="scope.row.status === 1 ? 'status-enabled' : 'status-disabled'"> {{ scope.row.status === 1 ? '启用' : '禁用' }} </span>
-          </template>
-        </el-table-column>
         <el-table-column
           min-width="10%"
           prop="createTime"
           label="创建时间"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          min-width="10%"
+          prop="updateBy"
+          label="更新人"
           show-overflow-tooltip
           align="center"
         />
@@ -186,8 +138,9 @@
       </el-pagination>
     </div>
     <!--新增页组件-->
-    <UserAdd
+    <HealthInfoAdd
       :visible.sync="showAddDialog"
+      type="运动资讯"
       @onSubmit="onSubmit"
     />
     <!--详情页组件-->
@@ -206,12 +159,13 @@
 
 <script>
 import service from '@/utils/request'
-import UserAdd from '@/views/user/components/userAdd.vue'
+import HealthInfoAdd from '@/views/healthInfo/components/healthInfoAdd.vue'
+
 import UserDetail from '@/views/user/components/userDetail.vue'
 import UserEdit from '@/views/user/components/userEdit.vue'
 
 export default {
-  components: { UserDetail, UserAdd, UserEdit },
+  components: { HealthInfoAdd, UserDetail, UserEdit },
   data() {
     return {
       params: {},
@@ -246,7 +200,8 @@ export default {
       this.loading = true
       this.params.pageNum = this.page.current
       this.params.pageSize = this.page.size
-      service.post('/user/selectByPage', this.params).then(res => {
+      service.post('/healthInfo/selectByPage', this.params).then(res => {
+        console.log(res)
         this.dataList = res.data.content
         this.page.pages = res.data.page.totalPages
         this.page.totalCount = res.data.page.totalElements
@@ -281,7 +236,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        service.get('/user/delete?id=' + userData.id).then(res => {
+        service.get('/healthInfo/delete?id=' + userData.id).then(res => {
           this.onSubmit()
         }).catch(error => {
           console.log(error)
