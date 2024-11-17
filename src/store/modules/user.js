@@ -51,7 +51,7 @@ const actions = {
           return reject('验证失败,请重新登录!')
         }
         commit('SET_NAME', data.username)
-        commit('SET_AVATAR', data.avatar) // TODO 设置头像
+        commit('SET_AVATAR', data.avatar)
         resolve(data)
       }).catch(error => {
         reject(error)

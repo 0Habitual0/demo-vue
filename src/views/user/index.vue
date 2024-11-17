@@ -9,7 +9,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="账号昵称">
+            <el-form-item label="用户名">
               <el-input v-model="params.nickName" placeholder="请输入昵称" />
             </el-form-item>
           </el-col>
@@ -63,7 +63,7 @@
           </el-col>
           <el-col>
             <div class="button-group">
-              <el-button @click="showUserDetails">新增</el-button>
+              <el-button @click="showUserAdd()">新增</el-button>
             </div>
           </el-col>
         </el-row>
@@ -87,7 +87,7 @@
         <el-table-column
           min-width="10%"
           prop="nickName"
-          label="姓名"
+          label="用户名"
           show-overflow-tooltip
           align="center"
         />
@@ -185,21 +185,33 @@
         </span>
       </el-pagination>
     </div>
-    <!--用户详情页-->
+    <!--用户新增页组件-->
+    <UserAdd
+      :visible.sync="showAddDialog"
+      @onSubmit="onSubmit"
+    />
+    <!--用户详情页组件-->
     <UserDetail
       :visible.sync="showDetailDialog"
-      :user-data="selectedUserData"
+      :data="data"
     />
-    <!--用户编辑页 TODO -->
+    <!--用户编辑页组件-->
+    <UserEdit
+      :visible.sync="showEditDialog"
+      :data="data"
+      @onSubmit="onSubmit"
+    />
   </div>
 </template>
 
 <script>
 import service from '@/utils/request'
+import UserAdd from '@/views/user/components/userAdd.vue'
 import UserDetail from '@/views/user/components/userDetail.vue'
+import UserEdit from '@/views/user/components/userEdit.vue'
 
 export default {
-  components: { UserDetail },
+  components: { UserDetail, UserAdd, UserEdit },
   data() {
     return {
       params: {},
@@ -211,8 +223,10 @@ export default {
         totalCount: 1,
         pages: 0
       },
+      data: {},
+      showAddDialog: false,
       showDetailDialog: false,
-      selectedUserData: {}
+      showEditDialog: false
     }
   },
   computed: {
@@ -250,12 +264,16 @@ export default {
       this.page.current = val
       this.query()
     },
+    showUserAdd() {
+      this.showAddDialog = true
+    },
     showUserDetails(userData) {
-      this.selectedUserData = userData
+      this.data = userData
       this.showDetailDialog = true
     },
     showUserEdits(userData) {
-      // TODO
+      this.data = userData
+      this.showEditDialog = true
     },
     onDelete(userData) {
       this.$confirm('此操作将删除该账号, 是否继续?', '提示', {

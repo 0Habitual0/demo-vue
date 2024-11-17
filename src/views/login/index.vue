@@ -170,7 +170,7 @@ $light_gray:#eee;
   min-height: 100%;
   width: 100%;
   background-size: contain;
-  background: url('/images/loginBackground.png') no-repeat fixed center;
+  background: url('/images/loginBackground1.png') no-repeat fixed center;
   overflow: hidden;
 
   .login-form {
@@ -211,6 +211,11 @@ $light_gray:#eee;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
+      text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black; /* 实现浅绿色的文字描边效果 */
     }
   }
 
