@@ -1,37 +1,26 @@
 <template>
-  <el-dialog
-    title="找回密码"
-    :visible.sync="localVisible"
-    destroy-on-close
-  >
-    <el-form ref="form" :model="data" :rules="rules" label-width="80px">
-      <el-form-item prop="username" label="登录账号">
-        <el-input v-model="data.username" />
-      </el-form-item>
-      <el-form-item prop="email" label="邮箱">
-        <el-input v-model="data.email" />
-      </el-form-item>
-      <el-form-item prop="password" label="密码">
-        <el-input v-model="data.password" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit('form')">提交</el-button>
-        <el-button @click="resetForm">重置</el-button>
-      </el-form-item>
-    </el-form>
-  </el-dialog>
+  <el-form ref="form" :model="data" :rules="rules" label-width="80px" class="fix-input-color">
+    <el-form-item prop="username" label="登录账号">
+      <el-input v-model="data.username" />
+    </el-form-item>
+    <el-form-item prop="email" label="邮箱">
+      <el-input v-model="data.email" />
+    </el-form-item>
+    <el-form-item prop="password" label="密码">
+      <el-input v-model="data.password" />
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="onSubmit('form')">提交</el-button>
+      <el-button @click="resetForm">重置</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
 import service from '@/utils/request'
 
 export default {
-  props: {
-    visible: {
-      type: Boolean,
-      required: true
-    }
-  },
+  props: {},
   data() {
     return {
       rules: {
@@ -39,18 +28,10 @@ export default {
         email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       },
-      localVisible: this.visible,
       data: {}
     }
   },
-  watch: {
-    visible(val) {
-      this.localVisible = val
-    },
-    localVisible(val) {
-      this.$emit('update:visible', val)
-    }
-  },
+  watch: {},
   methods: {
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
@@ -59,7 +40,7 @@ export default {
           service.post('/user/recoverPassword', this.data).then(res => {
             this.loading = false
             this.data = {}
-            this.localVisible = false
+            this.$emit('close')
             if (res.status === 'ok') {
               this.$message({
                 message: res.data,
@@ -83,6 +64,14 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+
+.fix-input-color {
+  .el-input {
+    input{
+      color: black !important;
+    }
+  }
+}
 
 </style>

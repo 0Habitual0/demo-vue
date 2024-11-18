@@ -44,18 +44,26 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="options">
-        <el-button type="text" @click="showRegister()">注册账号</el-button>
-        <el-button type="text" @click="showRecoverPassword()">找回密码</el-button>
+        <el-button type="text" @click="showRegisterDialogFunction()">注册账号</el-button>
+        <el-button type="text" @click="showRecoverPasswordDialogFunction()">找回密码</el-button>
       </div>
 
     </el-form>
     <div>
-      <Register
+      <el-dialog
+        title="注册账号"
         :visible.sync="showRegisterDialog"
-      />
-      <RecoverPassword
+        destroy-on-close
+      >
+        <Register @close="closeRegisterDialogFunction()" />
+      </el-dialog>
+      <el-dialog
+        title="找回密码"
         :visible.sync="showRecoverPasswordDialog"
-      />
+        destroy-on-close
+      >
+        <RecoverPassword @close="closeRecoverPasswordDialogFunction()" />
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -129,11 +137,17 @@ export default {
         }
       })
     },
-    showRegister() {
+    showRegisterDialogFunction() {
       this.showRegisterDialog = true
     },
-    showRecoverPassword() {
+    showRecoverPasswordDialogFunction() {
       this.showRecoverPasswordDialog = true
+    },
+    closeRegisterDialogFunction() {
+      this.showRegisterDialog = false
+    },
+    closeRecoverPasswordDialogFunction() {
+      this.showRecoverPasswordDialog = false
     }
   }
 }

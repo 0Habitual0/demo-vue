@@ -55,7 +55,6 @@ export default {
     handleSuccess(response, file, fileList) {
       if (response.data) {
         this.imageUrl = response.data
-        this.imageList = [{ name: 'Uploaded Image', url: response.data }]
         this.hideUpload = true
         this.$emit('updateTitleImage', this.imageUrl)
         Message.success('上传成功')
