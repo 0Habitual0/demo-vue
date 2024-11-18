@@ -4,41 +4,18 @@
       <el-form ref="queryForm" :model="params" label-width="100px" class="clearfix">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="登录账号">
-              <el-input v-model="params.username" placeholder="请输入登录账号" />
+            <el-form-item label="标题">
+              <el-input v-model="params.title" placeholder="请输入标题" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="用户名">
-              <el-input v-model="params.nickName" placeholder="请输入昵称" />
+            <el-form-item label="创建人">
+              <el-input v-model="params.createBy" placeholder="请输入创建人" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="性别">
-              <el-select v-model="params.sex" clearable placeholder="请选择性别">
-                <el-option label="男" value="男" />
-                <el-option label="女" value="女" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="电话号">
-              <el-input v-model="params.tel" placeholder="请输入电话号" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="邮箱">
-              <el-input v-model="params.email" placeholder="请输入邮箱地址" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="状态">
-              <el-select v-model="params.status" clearable placeholder="请选择状态">
-                <el-option label="启用" :value="1" />
-                <el-option label="禁用" :value="0" />
-              </el-select>
+            <el-form-item label="更新人">
+              <el-input v-model="params.updateBy" placeholder="请输入更新人" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -57,13 +34,13 @@
         <el-row type="flex" justify="space-between" align="middle">
           <el-col>
             <div>
-              <label>用户列表</label>
+              <label>{{ type }}列表</label>
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
           <el-col>
             <div class="button-group">
-              <el-button @click="showUserAdd()">新增</el-button>
+              <el-button @click="showAddDialogFunction()">新增</el-button>
             </div>
           </el-col>
         </el-row>
@@ -79,61 +56,40 @@
       >
         <el-table-column
           min-width="10%"
-          prop="username"
-          label="登录名"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="nickName"
-          label="用户名"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="sex"
-          label="性别"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="age"
-          label="年龄"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="email"
-          label="邮箱"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="tel"
-          label="电话号"
-          show-overflow-tooltip
-          align="center"
-        />
-        <el-table-column
-          min-width="10%"
-          prop="status"
-          label="状态"
+          prop="titleImage"
+          label="标题图片"
           show-overflow-tooltip
           align="center"
         >
-          <template v-slot="scope">
-            <span :class="scope.row.status === 1 ? 'status-enabled' : 'status-disabled'"> {{ scope.row.status === 1 ? '启用' : '禁用' }} </span>
+          <template #default="scope">
+            <img :src="scope.row.titleImage" alt="标题图片" style="width: 50px; height: 50px;">
           </template>
         </el-table-column>
         <el-table-column
           min-width="10%"
+          prop="title"
+          label="标题"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          min-width="10%"
+          prop="createBy"
+          label="创建人"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          min-width="10%"
           prop="createTime"
           label="创建时间"
+          show-overflow-tooltip
+          align="center"
+        />
+        <el-table-column
+          min-width="10%"
+          prop="updateBy"
+          label="更新人"
           show-overflow-tooltip
           align="center"
         />
@@ -154,12 +110,12 @@
             <el-button
               type="text"
               style=" margin-left: 8px"
-              @click="showUserDetails(scope.row)"
+              @click="showDetailDialogFunction(scope.row)"
             >查看</el-button>
             <el-button
               type="text"
               style=" margin-left: 8px"
-              @click="showUserEdits(scope.row)"
+              @click="showEditDialogFunction(scope.row)"
             >编辑</el-button>
             <el-button
               type="text"
@@ -185,35 +141,46 @@
         </span>
       </el-pagination>
     </div>
-    <!--用户新增页组件-->
-    <UserAdd
+    <!--新增页组件-->
+    <el-dialog
+      :title="'新增' + type"
       :visible.sync="showAddDialog"
-      @onSubmit="onSubmit"
-    />
-    <!--用户详情页组件-->
-    <UserDetail
+      destroy-on-close
+    >
+      <HealthInfoAdd :type="type" @onSubmit="closeAddDialogFunction()" />
+    </el-dialog>
+    <!--详情页组件-->
+    <el-dialog
+      :title="type + '详情'"
       :visible.sync="showDetailDialog"
-      :data="data"
-    />
-    <!--用户编辑页组件-->
-    <UserEdit
+      destroy-on-close
+    >
+      <HealthInfoDetail :data="data" @onSubmit="closeDetailDialogFunction()" />
+    </el-dialog>
+    <!--编辑页组件-->
+    <el-dialog
+      :title="'编辑' + type"
       :visible.sync="showEditDialog"
-      :data="data"
-      @onSubmit="onSubmit"
-    />
+      destroy-on-close
+    >
+      <HealthInfoEdit :type="type" :data="data" @onSubmit="closeEditDialogFunction()" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import service from '@/utils/request'
-import UserAdd from '@/views/user/components/userAdd.vue'
-import UserDetail from '@/views/user/components/userDetail.vue'
-import UserEdit from '@/views/user/components/userEdit.vue'
+import HealthInfoAdd from '@/views/healthInfo/components/healthInfoAdd.vue'
+import HealthInfoDetail from '@/views/healthInfo/components/healthInfoDetail.vue'
+import HealthInfoEdit from '@/views/healthInfo/components/healthInfoEdit.vue'
+
+import { Message } from 'element-ui'
 
 export default {
-  components: { UserDetail, UserAdd, UserEdit },
+  components: { HealthInfoAdd, HealthInfoDetail, HealthInfoEdit },
   data() {
     return {
+      type: '饮食推荐',
       params: {},
       loading: false,
       dataList: [],
@@ -244,9 +211,10 @@ export default {
     },
     query() {
       this.loading = true
+      this.params.type = this.type
       this.params.pageNum = this.page.current
       this.params.pageSize = this.page.size
-      service.post('/user/selectByPage', this.params).then(res => {
+      service.post('/healthInfo/selectByPage', this.params).then(res => {
         this.dataList = res.data.content
         this.page.pages = res.data.page.totalPages
         this.page.totalCount = res.data.page.totalElements
@@ -264,24 +232,38 @@ export default {
       this.page.current = val
       this.query()
     },
-    showUserAdd() {
+    showAddDialogFunction() {
       this.showAddDialog = true
     },
-    showUserDetails(userData) {
-      this.data = userData
+    showDetailDialogFunction(row) {
+      this.data = { ...row }
       this.showDetailDialog = true
     },
-    showUserEdits(userData) {
-      this.data = userData
+    showEditDialogFunction(row) {
+      this.data = { ...row }
       this.showEditDialog = true
     },
+    closeAddDialogFunction() {
+      this.showAddDialog = false
+      this.onSubmit()
+    },
+    closeDetailDialogFunction() {
+      this.showDetailDialog = false
+    },
+    closeEditDialogFunction() {
+      this.showEditDialog = false
+      this.onSubmit()
+    },
     onDelete(userData) {
-      this.$confirm('此操作将删除该账号, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该资讯, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        service.get('/user/delete?id=' + userData.id).then(res => {
+        service.get('/healthInfo/delete?id=' + userData.id).then(res => {
+          if (res.status === 'ok') {
+            Message.success('删除成功')
+          }
           this.onSubmit()
         }).catch(error => {
           console.log(error)

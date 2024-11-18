@@ -34,13 +34,13 @@
         <el-row type="flex" justify="space-between" align="middle">
           <el-col>
             <div>
-              <label>运动资讯列表</label>
+              <label>{{ type }}列表</label>
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
           <el-col>
             <div class="button-group">
-              <el-button @click="showUserAdd()">新增</el-button>
+              <el-button @click="showAddDialogFunction()">新增</el-button>
             </div>
           </el-col>
         </el-row>
@@ -60,7 +60,11 @@
           label="标题图片"
           show-overflow-tooltip
           align="center"
-        />
+        >
+          <template #default="scope">
+            <img :src="scope.row.titleImage" alt="标题图片" style="width: 50px; height: 50px;">
+          </template>
+        </el-table-column>
         <el-table-column
           min-width="10%"
           prop="title"
@@ -106,12 +110,12 @@
             <el-button
               type="text"
               style=" margin-left: 8px"
-              @click="showUserDetails(scope.row)"
+              @click="showDetailDialogFunction(scope.row)"
             >查看</el-button>
             <el-button
               type="text"
               style=" margin-left: 8px"
-              @click="showUserEdits(scope.row)"
+              @click="showEditDialogFunction(scope.row)"
             >编辑</el-button>
             <el-button
               type="text"
@@ -138,36 +142,45 @@
       </el-pagination>
     </div>
     <!--新增页组件-->
-    <HealthInfoAdd
+    <el-dialog
+      :title="'新增' + type"
       :visible.sync="showAddDialog"
-      type="运动资讯"
-      @onSubmit="onSubmit"
-    />
+      destroy-on-close
+    >
+      <HealthInfoAdd :type="type" @onSubmit="closeAddDialogFunction()" />
+    </el-dialog>
     <!--详情页组件-->
-    <UserDetail
+    <el-dialog
+      :title="type + '详情'"
       :visible.sync="showDetailDialog"
-      :data="data"
-    />
+      destroy-on-close
+    >
+      <HealthInfoDetail :data="data" @onSubmit="closeDetailDialogFunction()" />
+    </el-dialog>
     <!--编辑页组件-->
-    <UserEdit
+    <el-dialog
+      :title="'编辑' + type"
       :visible.sync="showEditDialog"
-      :data="data"
-      @onSubmit="onSubmit"
-    />
+      destroy-on-close
+    >
+      <HealthInfoEdit :type="type" :data="data" @onSubmit="closeEditDialogFunction()" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import service from '@/utils/request'
 import HealthInfoAdd from '@/views/healthInfo/components/healthInfoAdd.vue'
+import HealthInfoDetail from '@/views/healthInfo/components/healthInfoDetail.vue'
+import HealthInfoEdit from '@/views/healthInfo/components/healthInfoEdit.vue'
 
-import UserDetail from '@/views/user/components/userDetail.vue'
-import UserEdit from '@/views/user/components/userEdit.vue'
+import { Message } from 'element-ui'
 
 export default {
-  components: { HealthInfoAdd, UserDetail, UserEdit },
+  components: { HealthInfoAdd, HealthInfoDetail, HealthInfoEdit },
   data() {
     return {
+      type: '运动资讯',
       params: {},
       loading: false,
       dataList: [],
@@ -198,10 +211,10 @@ export default {
     },
     query() {
       this.loading = true
+      this.params.type = this.type
       this.params.pageNum = this.page.current
       this.params.pageSize = this.page.size
       service.post('/healthInfo/selectByPage', this.params).then(res => {
-        console.log(res)
         this.dataList = res.data.content
         this.page.pages = res.data.page.totalPages
         this.page.totalCount = res.data.page.totalElements
@@ -219,24 +232,38 @@ export default {
       this.page.current = val
       this.query()
     },
-    showUserAdd() {
+    showAddDialogFunction() {
       this.showAddDialog = true
     },
-    showUserDetails(userData) {
-      this.data = userData
+    showDetailDialogFunction(row) {
+      this.data = { ...row }
       this.showDetailDialog = true
     },
-    showUserEdits(userData) {
-      this.data = userData
+    showEditDialogFunction(row) {
+      this.data = { ...row }
       this.showEditDialog = true
     },
+    closeAddDialogFunction() {
+      this.showAddDialog = false
+      this.onSubmit()
+    },
+    closeDetailDialogFunction() {
+      this.showDetailDialog = false
+    },
+    closeEditDialogFunction() {
+      this.showEditDialog = false
+      this.onSubmit()
+    },
     onDelete(userData) {
-      this.$confirm('此操作将删除该账号, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该资讯, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         service.get('/healthInfo/delete?id=' + userData.id).then(res => {
+          if (res.status === 'ok') {
+            Message.success('删除成功')
+          }
           this.onSubmit()
         }).catch(error => {
           console.log(error)

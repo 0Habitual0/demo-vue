@@ -33,6 +33,10 @@ export default {
     type: {
       type: String,
       required: true
+    },
+    data: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -48,8 +52,7 @@ export default {
         titleImage: [{ required: true, validator: validateTitleImage, trigger: 'blur' }],
         title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
         content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
-      },
-      data: {}
+      }
     }
   },
   methods: {

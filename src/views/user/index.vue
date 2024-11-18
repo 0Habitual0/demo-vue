@@ -63,7 +63,7 @@
           </el-col>
           <el-col>
             <div class="button-group">
-              <el-button @click="showUserAdd()">新增</el-button>
+              <el-button @click="showAddDialogFunction()">新增</el-button>
             </div>
           </el-col>
         </el-row>
@@ -154,12 +154,12 @@
             <el-button
               type="text"
               style=" margin-left: 8px"
-              @click="showUserDetails(scope.row)"
+              @click="showDetailDialogFunction(scope.row)"
             >查看</el-button>
             <el-button
               type="text"
               style=" margin-left: 8px"
-              @click="showUserEdits(scope.row)"
+              @click="showEditDialogFunction(scope.row)"
             >编辑</el-button>
             <el-button
               type="text"
@@ -186,21 +186,29 @@
       </el-pagination>
     </div>
     <!--新增页组件-->
-    <UserAdd
+    <el-dialog
+      title="新增用户"
       :visible.sync="showAddDialog"
-      @onSubmit="onSubmit"
-    />
+      destroy-on-close
+    >
+      <UserAdd @onSubmit="closeAddDialogFunction()" />
+    </el-dialog>
     <!--详情页组件-->
-    <UserDetail
+    <el-dialog
+      title="用户详情"
       :visible.sync="showDetailDialog"
-      :data="data"
-    />
+      destroy-on-close
+    >
+      <UserDetail :data="data" @onSubmit="closeDetailDialogFunction()" />
+    </el-dialog>
     <!--编辑页组件-->
-    <UserEdit
+    <el-dialog
+      title="编辑用户"
       :visible.sync="showEditDialog"
-      :data="data"
-      @onSubmit="onSubmit"
-    />
+      destroy-on-close
+    >
+      <UserEdit :data="data" @onSubmit="closeEditDialogFunction()" />
+    </el-dialog>
   </div>
 </template>
 
@@ -209,6 +217,7 @@ import service from '@/utils/request'
 import UserAdd from '@/views/user/components/userAdd.vue'
 import UserDetail from '@/views/user/components/userDetail.vue'
 import UserEdit from '@/views/user/components/userEdit.vue'
+import { Message } from 'element-ui'
 
 export default {
   components: { UserDetail, UserAdd, UserEdit },
@@ -264,16 +273,27 @@ export default {
       this.page.current = val
       this.query()
     },
-    showUserAdd() {
+    showAddDialogFunction() {
       this.showAddDialog = true
     },
-    showUserDetails(userData) {
-      this.data = userData
+    showDetailDialogFunction(row) {
+      this.data = { ...row }
       this.showDetailDialog = true
     },
-    showUserEdits(userData) {
-      this.data = userData
+    showEditDialogFunction(row) {
+      this.data = { ...row }
       this.showEditDialog = true
+    },
+    closeAddDialogFunction() {
+      this.showAddDialog = false
+      this.onSubmit()
+    },
+    closeDetailDialogFunction() {
+      this.showDetailDialog = false
+    },
+    closeEditDialogFunction() {
+      this.showEditDialog = false
+      this.onSubmit()
     },
     onDelete(userData) {
       this.$confirm('此操作将删除该账号, 是否继续?', '提示', {
@@ -282,6 +302,9 @@ export default {
         type: 'warning'
       }).then(() => {
         service.get('/user/delete?id=' + userData.id).then(res => {
+          if (res.status === 'ok') {
+            Message.success('删除成功')
+          }
           this.onSubmit()
         }).catch(error => {
           console.log(error)
