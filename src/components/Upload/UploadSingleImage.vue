@@ -21,8 +21,10 @@ import service from '@/utils/request'
 
 export default {
   props: {
-    // eslint-disable-next-line vue/require-default-prop
-    value: String
+    value: {
+      type: String,
+      default: null
+    }
   },
   data() {
     return {

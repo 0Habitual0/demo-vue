@@ -34,7 +34,7 @@
         <el-row type="flex" justify="space-between" align="middle">
           <el-col>
             <div>
-              <label>资讯评论列表</label>
+              <label>留言列表</label>
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
@@ -154,7 +154,7 @@ export default {
       this.params.type = this.type
       this.params.pageNum = this.page.current
       this.params.pageSize = this.page.size
-      service.post('/healthInfoComment/selectByPage', this.params).then(res => {
+      service.post('/message/selectByPage', this.params).then(res => {
         this.dataList = res.data.content
         this.page.pages = res.data.page.totalPages
         this.page.totalCount = res.data.page.totalElements
@@ -173,12 +173,12 @@ export default {
       this.query()
     },
     onDelete(row) {
-      this.$confirm('此操作将删除该评论, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该留言, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        service.get('/healthInfoComment/delete?id=' + row.id).then(res => {
+        service.get('/message/delete?id=' + row.id).then(res => {
           if (res.status === 'ok') {
             Message.success('删除成功')
           }

@@ -204,6 +204,22 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/message',
+    component: Layout,
+    redirect: '/message/messageList',
+    name: 'message',
+    meta: { title: '留言管理', icon: 'message' },
+    children: [
+      {
+        path: 'messageList',
+        name: 'messageList',
+        component: () => import('@/views/message/index'),
+        meta: { title: '留言列表', icon: 'form' }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
