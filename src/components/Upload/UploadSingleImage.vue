@@ -26,13 +26,12 @@ export default {
   },
   data() {
     return {
-      imageList: this.value ? [{ name: 'Uploaded Image', url: this.value }] : [], // 如果有值，初始化imageList
+      imageList: this.value ? [{ name: 'Uploaded Image', url: this.value }] : [], // 如果有值，初始化imageList，只需要初始化一次用来回显
       hideUpload: !!this.value // 如果有值，则隐藏上传按钮
     }
   },
   watch: {
     value(newVal) {
-      this.imageList = newVal ? [{ name: 'Uploaded Image', url: newVal }] : []
       this.hideUpload = !!newVal
     }
   },
@@ -63,9 +62,7 @@ export default {
     },
     handleRemove() {
       this.$emit('updateTitleImage', null)
-      this.imageList = [] // 清空imageList
       this.hideUpload = false
-      this.$emit('input', null)
     },
     beforeUpload(file) {
       const isImage = file.type.startsWith('image/')
