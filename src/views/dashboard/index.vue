@@ -65,7 +65,6 @@ export default {
     },
     showDetailDialogFunction(row) {
       this.data = { ...row }
-      console.log(this.data)
       this.showDetailDialog = true
     },
     closeDetailDialogFunction() {

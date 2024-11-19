@@ -181,19 +181,25 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/healthInfo/sports',
     name: 'healthInfo',
-    meta: { title: '健康资讯', icon: 'user' },
+    meta: { title: '健康资讯管理', icon: 'form' },
     children: [
       {
         path: 'sports',
         name: 'sports',
         component: () => import('@/views/healthInfo/sports'),
-        meta: { title: '运动资讯', icon: 'form' }
+        meta: { title: '运动资讯列表', icon: 'form' }
       },
       {
         path: 'foods',
         name: 'foods',
         component: () => import('@/views/healthInfo/foods'),
-        meta: { title: '饮食推荐', icon: 'form' }
+        meta: { title: '饮食推荐列表', icon: 'form' }
+      },
+      {
+        path: 'comment',
+        name: 'comment',
+        component: () => import('@/views/healthInfo/comment'),
+        meta: { title: '资讯评论列表', icon: 'form' }
       }
     ]
   },

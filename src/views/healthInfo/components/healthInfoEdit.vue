@@ -1,26 +1,28 @@
 <template>
-  <el-form ref="form" :model="data" :rules="rules" label-width="80px">
-    <el-form-item prop="titleImage" label="标题图片">
-      <UploadSingleImage
-        v-model="data.titleImage"
-        @updateTitleImage="updateTitleImage"
-      />
-    </el-form-item>
-    <el-form-item prop="title" label="标题">
-      <el-input v-model="data.title" />
-    </el-form-item>
-    <el-form-item prop="content" label="内容">
-      <el-input
-        v-model="data.content"
-        type="textarea"
-        :rows="10"
-      />
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit('form')">提交</el-button>
-      <el-button @click="resetForm">重置</el-button>
-    </el-form-item>
-  </el-form>
+  <div v-loading="loading">
+    <el-form ref="form" :model="data" :rules="rules" label-width="80px">
+      <el-form-item prop="titleImage" label="标题图片">
+        <UploadSingleImage
+          v-model="data.titleImage"
+          @updateTitleImage="updateTitleImage"
+        />
+      </el-form-item>
+      <el-form-item prop="title" label="标题">
+        <el-input v-model="data.title" />
+      </el-form-item>
+      <el-form-item prop="content" label="内容">
+        <el-input
+          v-model="data.content"
+          type="textarea"
+          :rows="10"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit('form')">提交</el-button>
+        <el-button @click="resetForm">重置</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -48,6 +50,7 @@ export default {
       }
     }
     return {
+      loading: false,
       rules: {
         titleImage: [{ required: true, validator: validateTitleImage, trigger: 'blur' }],
         title: [{ required: true, message: '请输入标题', trigger: 'blur' }],

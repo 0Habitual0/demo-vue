@@ -254,13 +254,13 @@ export default {
       this.showEditDialog = false
       this.onSubmit()
     },
-    onDelete(userData) {
+    onDelete(row) {
       this.$confirm('此操作将删除该资讯, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        service.get('/healthInfo/delete?id=' + userData.id).then(res => {
+        service.get('/healthInfo/delete?id=' + row.id).then(res => {
           if (res.status === 'ok') {
             Message.success('删除成功')
           }
