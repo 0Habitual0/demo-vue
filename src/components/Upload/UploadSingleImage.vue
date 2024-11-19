@@ -1,20 +1,18 @@
 <template>
-  <div>
-    <el-upload
-      list-type="picture-card"
-      action=""
-      :http-request="uploadFile"
-      :limit="1"
-      :file-list="imageList"
-      :on-success="handleSuccess"
-      :on-error="handleError"
-      :on-remove="handleRemove"
-      :before-upload="beforeUpload"
-      :class="{ hide: hideUpload }"
-    >
-      <i class="el-icon-plus" />
-    </el-upload>
-  </div>
+  <el-upload
+    list-type="picture-card"
+    action=""
+    :http-request="uploadFile"
+    :limit="1"
+    :file-list="imageList"
+    :on-success="handleSuccess"
+    :on-error="handleError"
+    :on-remove="handleRemove"
+    :before-upload="beforeUpload"
+    :class="{ hide: hideUpload }"
+  >
+    <i class="el-icon-plus" />
+  </el-upload>
 </template>
 
 <script>
@@ -28,14 +26,12 @@ export default {
   },
   data() {
     return {
-      imageUrl: this.value,
       imageList: this.value ? [{ name: 'Uploaded Image', url: this.value }] : [], // 如果有值，初始化imageList
       hideUpload: !!this.value // 如果有值，则隐藏上传按钮
     }
   },
   watch: {
     value(newVal) {
-      this.imageUrl = newVal
       this.imageList = newVal ? [{ name: 'Uploaded Image', url: newVal }] : []
       this.hideUpload = !!newVal
     }
@@ -54,9 +50,8 @@ export default {
     },
     handleSuccess(response, file, fileList) {
       if (response.data) {
-        this.imageUrl = response.data
         this.hideUpload = true
-        this.$emit('updateTitleImage', this.imageUrl)
+        this.$emit('updateTitleImage', response.data)
         Message.success('上传成功')
       } else {
         Message.error('上传成功但未返回URL')

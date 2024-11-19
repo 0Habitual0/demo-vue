@@ -1,6 +1,6 @@
 <template>
-  <el-form ref="form" :model="data" label-width="80px">
-    <el-form-item prop="titleImage" label="标题图片">
+  <el-form label-width="80px">
+    <el-form-item>
       <el-image
         v-if="data.titleImage"
         :src="data.titleImage"
@@ -8,14 +8,14 @@
       />
     </el-form-item>
     <el-form-item label="标题">
-      <el-input v-model="data.title" disabled />
+      <span>{{ data.title }}</span>
     </el-form-item>
     <el-form-item label="内容">
       <el-input
         v-model="data.content"
         type="textarea"
         :rows="10"
-        disabled
+        readonly
       />
     </el-form-item>
   </el-form>
@@ -28,9 +28,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  data() {
-    return {}
   }
 }
 </script>

@@ -3,15 +3,22 @@
     <!-- <div class="dashboard-text">name: {{ name }}</div> -->
     <div class="news-container">
       <div class="latest-news">
-        <!-- 在这里添加最新资讯的内容 -->
         <h2>最新资讯</h2>
         <ul>
-          <li v-for="newsItem in newsList" :key="newsItem.id" @click="handleNewsClick(newsItem)">
-            <img :src="newsItem.image" alt="news image">
-            <span>{{ newsItem.title }}</span>
+          <li v-for="healthInfoItem in healthInfoList" :key="healthInfoItem.id" @click="showDetailDialogFunction(healthInfoItem)">
+            <img :src="healthInfoItem.titleImage" alt="news image">
+            <span>{{ healthInfoItem.title }}</span>
           </li>
         </ul>
       </div>
+      <!--详情页组件-->
+      <el-dialog
+        :title="data.type + '详情'"
+        :visible.sync="showDetailDialog"
+        destroy-on-close
+      >
+        <HealthInfoDetail :data="data" @onSubmit="closeDetailDialogFunction()" />
+      </el-dialog>
     </div>
     <div class="charts-header">
       <h2>健康指数统计</h2>
@@ -28,31 +35,41 @@
 
 <script>
 import service from '@/utils/request'
+import HealthInfoDetail from '@/views/healthInfo/components/healthInfoDetail.vue'
 // import { mapGetters } from 'vuex'
 // import BarChart from '@/views/dashboard/BarChart.vue'
 // import LineChart from '@/views/dashboard/LineChart.vue'
 
 export default {
   name: 'Dashboard',
+  components: { HealthInfoDetail },
   // components: { BarChart, LineChart },
   data() {
     return {
-      newsList: [
-        { id: 1, title: '新闻标题1', image: 'path/to/image1.jpg' },
-        { id: 2, title: '新闻标题2', image: 'path/to/image2.jpg' },
-        { id: 3, title: '新闻标题3', image: 'path/to/image3.jpg' }
-      ]
+      healthInfoList: [],
+      showDetailDialog: false,
+      data: {}
     }
   },
   mounted() {
-    service.get('/user/info', this.formData).then(res => {
-      console.log(res)
-    })
+    this.init()
   },
   methods: {
-    handleNewsClick(newsItem) {
-      console.log('点击了新闻:', newsItem)
-      // 这里可以添加点击事件的处理逻辑，比如跳转到新闻详情页
+    init() {
+      this.selectLatestHealthInfo()
+    },
+    selectLatestHealthInfo() {
+      service.get('/healthInfo/selectLatest', this.formData).then(res => {
+        this.healthInfoList = res.data
+      })
+    },
+    showDetailDialogFunction(row) {
+      this.data = { ...row }
+      console.log(this.data)
+      this.showDetailDialog = true
+    },
+    closeDetailDialogFunction() {
+      this.showDetailDialog = false
     }
   }
 }
