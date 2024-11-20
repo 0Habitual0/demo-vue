@@ -165,13 +165,25 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/user/userList',
     name: 'user',
-    meta: { title: '用户管理', icon: 'user' },
+    meta: { title: '用户', icon: 'user' },
     children: [
       {
         path: 'userList',
         name: 'userList',
         component: () => import('@/views/user/index'),
-        meta: { title: '用户列表', icon: 'form' }
+        meta: { title: '用户管理', icon: 'form' }
+      },
+      {
+        path: 'userPersonal',
+        name: 'userPersonal',
+        component: () => import('@/views/user/userPersonal'),
+        meta: { title: '个人中心', icon: 'form' }
+      },
+      {
+        path: 'userMessage',
+        name: 'userMessage',
+        component: () => import('@/views/user/userMessage'),
+        meta: { title: '我的留言', icon: 'form' }
       }
     ]
   },
@@ -181,25 +193,25 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/healthInfo/sports',
     name: 'healthInfo',
-    meta: { title: '健康资讯管理', icon: 'form' },
+    meta: { title: '健康资讯', icon: 'form' },
     children: [
       {
         path: 'sports',
         name: 'sports',
         component: () => import('@/views/healthInfo/sports'),
-        meta: { title: '运动资讯列表', icon: 'form' }
+        meta: { title: '运动资讯管理', icon: 'form' }
       },
       {
         path: 'foods',
         name: 'foods',
         component: () => import('@/views/healthInfo/foods'),
-        meta: { title: '饮食推荐列表', icon: 'form' }
+        meta: { title: '饮食推荐管理', icon: 'form' }
       },
       {
         path: 'comment',
         name: 'comment',
         component: () => import('@/views/healthInfo/comment'),
-        meta: { title: '资讯评论列表', icon: 'form' }
+        meta: { title: '资讯评论管理', icon: 'form' }
       }
     ]
   },
@@ -209,13 +221,13 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/message/messageList',
     name: 'message',
-    meta: { title: '留言管理', icon: 'message' },
+    meta: { title: '留言', icon: 'message' },
     children: [
       {
         path: 'messageList',
         name: 'messageList',
         component: () => import('@/views/message/index'),
-        meta: { title: '留言列表', icon: 'form' }
+        meta: { title: '留言管理', icon: 'form' }
       }
     ]
   },

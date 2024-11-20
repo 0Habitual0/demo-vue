@@ -94,6 +94,11 @@
             <el-button
               type="text"
               style=" margin-left: 8px"
+              @click="showEditDialogFunction(scope.row)"
+            >回复</el-button>
+            <el-button
+              type="text"
+              style=" margin-left: 8px"
               @click="onDelete(scope.row)"
             >删除</el-button>
           </template>
@@ -115,14 +120,25 @@
         </span>
       </el-pagination>
     </div>
+    <!--回复页组件-->
+    <el-dialog
+      v-if="showEditDialog"
+      :visible.sync="showEditDialog"
+      title="回复留言"
+      destroy-on-close
+    >
+      <Reply :data="data" @onSubmit="closeEditDialogFunction()" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import service from '@/utils/request'
 import { Message } from 'element-ui'
+import Reply from '@/views/message/components/reply.vue'
 
 export default {
+  components: { Reply },
   data() {
     return {
       params: {},
@@ -133,7 +149,9 @@ export default {
         size: 5,
         totalCount: 1,
         pages: 0
-      }
+      },
+      data: {},
+      showEditDialog: false
     }
   },
   computed: {
@@ -171,6 +189,14 @@ export default {
     handlePageCurrentChange(val) {
       this.page.current = val
       this.query()
+    },
+    showEditDialogFunction(row) {
+      this.data = { ...row }
+      this.showEditDialog = true
+    },
+    closeEditDialogFunction() {
+      this.showEditDialog = false
+      this.onSubmit()
     },
     onDelete(row) {
       this.$confirm('此操作将删除该留言, 是否继续?', '提示', {
