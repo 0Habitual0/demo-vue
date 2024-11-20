@@ -13,8 +13,9 @@
       </div>
       <!--详情页组件-->
       <el-dialog
-        :title="data.type + '详情'"
+        v-if="showDetailDialog"
         :visible.sync="showDetailDialog"
+        :title="data.type + '详情'"
         destroy-on-close
       >
         <HealthInfoDetail :data="data" @onSubmit="closeDetailDialogFunction()" />

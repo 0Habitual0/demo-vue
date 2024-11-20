@@ -143,24 +143,27 @@
     </div>
     <!--新增页组件-->
     <el-dialog
-      :title="'新增' + type"
+      v-if="showAddDialog"
       :visible.sync="showAddDialog"
+      :title="'新增' + type"
       destroy-on-close
     >
       <HealthInfoAdd :type="type" @onSubmit="closeAddDialogFunction()" />
     </el-dialog>
     <!--详情页组件-->
     <el-dialog
-      :title="type + '详情'"
+      v-if="showDetailDialog"
       :visible.sync="showDetailDialog"
+      :title="type + '详情'"
       destroy-on-close
     >
       <HealthInfoDetail :data="data" @onSubmit="closeDetailDialogFunction()" />
     </el-dialog>
     <!--编辑页组件-->
     <el-dialog
-      :title="'编辑' + type"
+      v-if="showEditDialog"
       :visible.sync="showEditDialog"
+      :title="'编辑' + type"
       destroy-on-close
     >
       <HealthInfoEdit :type="type" :data="data" @onSubmit="closeEditDialogFunction()" />

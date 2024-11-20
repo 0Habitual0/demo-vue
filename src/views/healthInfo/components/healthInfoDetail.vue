@@ -2,11 +2,24 @@
   <div v-loading="loading">
     <el-form label-width="80px">
       <el-form-item>
-        <el-image
-          v-if="data.titleImage"
-          :src="data.titleImage"
-          style="margin-top: 10px; width: 100px; height: 100px;"
-        />
+        <el-row>
+          <el-col :span="20">
+            <el-image
+              v-if="data.titleImage"
+              :src="data.titleImage"
+              style="margin-top: 10px; width: 100px; height: 100px;"
+            />
+          </el-col>
+          <el-col :span="4">
+            <el-button
+              :icon="isFavorite ? 'el-icon-star-on' : 'el-icon-star-off'"
+              type="primary"
+              @click="toggleFavorite"
+            >
+              {{ isFavorite ? '取消收藏' : '添加收藏' }}
+            </el-button>
+          </el-col>
+        </el-row>
       </el-form-item>
       <el-form-item label="标题">
         <span>{{ data.title }}</span>
@@ -56,6 +69,7 @@ export default {
   },
   data() {
     return {
+      isFavorite: false,
       loading: false,
       rules: {
         content: [{ required: true, message: '请输入评论内容', trigger: 'blur' }]
@@ -64,17 +78,44 @@ export default {
       params: {}
     }
   },
-  mounted() {
+  created() {
     this.init()
   },
   methods: {
     init() {
       this.selectComment()
+      this.selectCollect()
     },
     selectComment() {
       this.loading = true
       service.get('/healthInfoComment/selectByHealthInfo?healthInfoId=' + this.data.id).then(res => {
         this.commentList = res.data
+        this.loading = false
+      }).catch(error => {
+        console.log(error)
+        this.loading = false
+      })
+    },
+    selectCollect() {
+      service.get('/healthInfoCollect/isCollect?healthInfoId=' + this.data.id).then(res => {
+        if (res.status === 'ok') {
+          this.isFavorite = res.data
+        }
+        this.loading = false
+      }).catch(error => {
+        console.log(error)
+        this.loading = false
+      })
+    },
+    toggleFavorite() {
+      const params = {
+        healthInfoId: this.data.id
+      }
+      this.loading = true
+      service.post('/healthInfoCollect/save', params).then(res => {
+        if (res.status === 'ok') {
+          this.isFavorite = res.data
+        }
         this.loading = false
       }).catch(error => {
         console.log(error)

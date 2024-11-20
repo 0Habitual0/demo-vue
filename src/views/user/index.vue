@@ -187,24 +187,27 @@
     </div>
     <!--新增页组件-->
     <el-dialog
-      title="新增用户"
+      v-if="showAddDialog"
       :visible.sync="showAddDialog"
+      title="新增用户"
       destroy-on-close
     >
       <UserAdd @onSubmit="closeAddDialogFunction()" />
     </el-dialog>
     <!--详情页组件-->
     <el-dialog
-      title="用户详情"
+      v-if="showDetailDialog"
       :visible.sync="showDetailDialog"
+      title="用户详情"
       destroy-on-close
     >
       <UserDetail :data="data" @onSubmit="closeDetailDialogFunction()" />
     </el-dialog>
     <!--编辑页组件-->
     <el-dialog
-      title="编辑用户"
+      v-if="showEditDialog"
       :visible.sync="showEditDialog"
+      title="编辑用户"
       destroy-on-close
     >
       <UserEdit :data="data" @onSubmit="closeEditDialogFunction()" />
