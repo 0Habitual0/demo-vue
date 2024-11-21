@@ -38,11 +38,11 @@
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
-          <!--          <el-col>-->
-          <!--            <div class="button-group">-->
-          <!--              <el-button @click="showAddDialogFunction()">新增</el-button>-->
-          <!--            </div>-->
-          <!--          </el-col>-->
+          <el-col>
+            <div class="button-group">
+              <el-button @click="showAddDialogFunction()">新增</el-button>
+            </div>
+          </el-col>
         </el-row>
       </div>
       <!--表格数据-->
@@ -112,16 +112,16 @@
               style=" margin-left: 8px"
               @click="showDetailDialogFunction(scope.row)"
             >查看</el-button>
-            <!--            <el-button-->
-            <!--              type="text"-->
-            <!--              style=" margin-left: 8px"-->
-            <!--              @click="showEditDialogFunction(scope.row)"-->
-            <!--            >编辑</el-button>-->
-            <!--            <el-button-->
-            <!--              type="text"-->
-            <!--              style=" margin-left: 8px"-->
-            <!--              @click="onDelete(scope.row)"-->
-            <!--            >删除</el-button>-->
+            <el-button
+              type="text"
+              style=" margin-left: 8px"
+              @click="showEditDialogFunction(scope.row)"
+            >编辑</el-button>
+            <el-button
+              type="text"
+              style=" margin-left: 8px"
+              @click="onDelete(scope.row)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -183,7 +183,7 @@ export default {
   components: { HealthInfoAdd, HealthInfoDetail, HealthInfoEdit },
   data() {
     return {
-      type: '饮食推荐',
+      type: '运动资讯',
       params: {},
       loading: false,
       dataList: [],

@@ -1,40 +1,40 @@
 <template>
   <div class="container">
-    <div class="filter-box">
-      <el-form ref="queryForm" :model="params" label-width="100px" class="clearfix">
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="标题">
-              <el-input v-model="params.title" placeholder="请输入标题" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="创建人">
-              <el-input v-model="params.createBy" placeholder="请输入创建人" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="更新人">
-              <el-input v-model="params.updateBy" placeholder="请输入更新人" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item class="flex-right">
-              <el-button type="primary" @click="onSubmit()">查询</el-button>
-              <el-button @click="resetQuery">重置</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div>
+    <!--    <div class="filter-box">-->
+    <!--      <el-form ref="queryForm" :model="params" label-width="100px" class="clearfix">-->
+    <!--        <el-row>-->
+    <!--          <el-col :span="8">-->
+    <!--            <el-form-item label="标题">-->
+    <!--              <el-input v-model="params.title" placeholder="请输入标题" />-->
+    <!--            </el-form-item>-->
+    <!--          </el-col>-->
+    <!--          <el-col :span="8">-->
+    <!--            <el-form-item label="创建人">-->
+    <!--              <el-input v-model="params.createBy" placeholder="请输入创建人" />-->
+    <!--            </el-form-item>-->
+    <!--          </el-col>-->
+    <!--          <el-col :span="8">-->
+    <!--            <el-form-item label="更新人">-->
+    <!--              <el-input v-model="params.updateBy" placeholder="请输入更新人" />-->
+    <!--            </el-form-item>-->
+    <!--          </el-col>-->
+    <!--        </el-row>-->
+    <!--        <el-row>-->
+    <!--          <el-col :span="24">-->
+    <!--            <el-form-item class="flex-right">-->
+    <!--              <el-button type="primary" @click="onSubmit()">查询</el-button>-->
+    <!--              <el-button @click="resetQuery">重置</el-button>-->
+    <!--            </el-form-item>-->
+    <!--          </el-col>-->
+    <!--        </el-row>-->
+    <!--      </el-form>-->
+    <!--    </div>-->
     <div class="pagination-box">
       <div>
         <el-row type="flex" justify="space-between" align="middle">
           <el-col>
             <div>
-              <label>{{ type }}列表</label>
+              <label>收藏资讯列表</label>
               <p>共有<span>{{ page.totalCount }}</span>条查询结果</p>
             </div>
           </el-col>
@@ -156,6 +156,7 @@
       :visible.sync="showDetailDialog"
       :title="type + '详情'"
       destroy-on-close
+      @close="onSubmit"
     >
       <HealthInfoDetail :data="data" @onSubmit="closeDetailDialogFunction()" />
     </el-dialog>
@@ -183,7 +184,7 @@ export default {
   components: { HealthInfoAdd, HealthInfoDetail, HealthInfoEdit },
   data() {
     return {
-      type: '饮食推荐',
+      type: '',
       params: {},
       loading: false,
       dataList: [],
@@ -214,10 +215,10 @@ export default {
     },
     query() {
       this.loading = true
-      this.params.type = this.type
+      // this.params.type = this.type
       this.params.pageNum = this.page.current
       this.params.pageSize = this.page.size
-      service.post('/healthInfo/selectByPage', this.params).then(res => {
+      service.post('/healthInfo/selectByPageCollect', this.params).then(res => {
         this.dataList = res.data.content
         this.page.pages = res.data.page.totalPages
         this.page.totalCount = res.data.page.totalElements
@@ -239,6 +240,7 @@ export default {
       this.showAddDialog = true
     },
     showDetailDialogFunction(row) {
+      this.type = row.type
       this.data = { ...row }
       this.showDetailDialog = true
     },

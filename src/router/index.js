@@ -195,20 +195,20 @@ export const asyncRoutes = [
   {
     path: '/healthInfo',
     component: Layout,
-    redirect: '/healthInfo/sports',
+    redirect: '/healthInfo/collect',
     name: 'healthInfo',
-    meta: { title: '健康资讯', icon: 'form', roles: ['管理员'] },
+    meta: { title: '健康资讯', icon: 'form' },
     children: [
       {
-        path: 'sports',
-        name: 'sports',
-        component: () => import('@/views/healthInfo/sports'),
+        path: 'sportsManage',
+        name: 'sportsManage',
+        component: () => import('@/views/healthInfo/sportsManage'),
         meta: { title: '运动资讯管理', icon: 'form', roles: ['管理员'] }
       },
       {
         path: 'foods',
         name: 'foods',
-        component: () => import('@/views/healthInfo/foods'),
+        component: () => import('@/views/healthInfo/foodsManage'),
         meta: { title: '饮食推荐管理', icon: 'form', roles: ['管理员'] }
       },
       {
@@ -216,6 +216,24 @@ export const asyncRoutes = [
         name: 'comment',
         component: () => import('@/views/healthInfo/comment'),
         meta: { title: '资讯评论管理', icon: 'form', roles: ['管理员'] }
+      },
+      {
+        path: 'collect',
+        name: 'collect',
+        component: () => import('@/views/healthInfo/collect'),
+        meta: { title: '收藏资讯', icon: 'form' }
+      },
+      {
+        path: 'sports',
+        name: 'sports',
+        component: () => import('@/views/healthInfo/sports'),
+        meta: { title: '运动资讯', icon: 'form', roles: ['普通用户'] }
+      },
+      {
+        path: 'foods',
+        name: 'foods',
+        component: () => import('@/views/healthInfo/foods'),
+        meta: { title: '饮食推荐', icon: 'form', roles: ['普通用户'] }
       }
     ]
   },
