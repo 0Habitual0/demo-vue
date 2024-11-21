@@ -25,7 +25,7 @@
       <h2>健康指数统计</h2>
     </div>
     <div class="charts-container">
-
+      <TrendChart />
     </div>
     <div class="charts-footer">
       <p>@ 健康管理系统 2024</p>
@@ -36,10 +36,11 @@
 <script>
 import service from '@/utils/request'
 import HealthInfoDetail from '@/views/healthInfo/components/healthInfoDetail.vue'
+import TrendChart from '@/views/dashboard/components/TrendChart.vue'
 
 export default {
   name: 'Dashboard',
-  components: { HealthInfoDetail },
+  components: { HealthInfoDetail, TrendChart },
   data() {
     return {
       healthInfoList: [],
