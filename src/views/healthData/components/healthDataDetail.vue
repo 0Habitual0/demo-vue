@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading">
     <el-form ref="form" :model="data" label-width="80px">
-      <el-form-item label="用户">
+      <el-form-item v-if="dropDownList" label="用户">
         <el-select v-model="data.userId" placeholder="请选择用户" disabled>
           <el-option
             v-for="item in dropDownList"

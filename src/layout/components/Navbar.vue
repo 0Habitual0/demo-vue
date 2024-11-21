@@ -47,7 +47,9 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      // 这里可以控制是否回到登出前的页面
+      this.$router.push(`/login`)
+      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }

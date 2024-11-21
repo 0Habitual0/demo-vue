@@ -172,22 +172,16 @@ export const asyncRoutes = [
     meta: { title: '用户', icon: 'user' },
     children: [
       {
-        path: 'userList',
-        name: 'userList',
-        component: () => import('@/views/user/index'),
-        meta: { title: '用户管理', icon: 'form', roles: ['管理员'] }
-      },
-      {
         path: 'userPersonal',
         name: 'userPersonal',
-        component: () => import('@/views/user/userPersonal'),
+        component: () => import('@/views/user/userPersonal.vue'),
         meta: { title: '个人中心', icon: 'form' }
       },
       {
-        path: 'userMessage',
-        name: 'userMessage',
-        component: () => import('@/views/user/userMessage'),
-        meta: { title: '我的留言', icon: 'form', roles: ['普通用户'] }
+        path: 'userList',
+        name: 'userList',
+        component: () => import('@/views/user/index.vue'),
+        meta: { title: '用户管理', icon: 'form', roles: ['管理员'] }
       }
     ]
   },
@@ -202,54 +196,38 @@ export const asyncRoutes = [
       {
         path: 'sportsManage',
         name: 'sportsManage',
-        component: () => import('@/views/healthInfo/sportsManage'),
+        component: () => import('@/views/healthInfo/sportsManage.vue'),
         meta: { title: '运动资讯管理', icon: 'form', roles: ['管理员'] }
       },
       {
         path: 'foods',
         name: 'foods',
-        component: () => import('@/views/healthInfo/foodsManage'),
+        component: () => import('@/views/healthInfo/foodsManage.vue'),
         meta: { title: '饮食推荐管理', icon: 'form', roles: ['管理员'] }
       },
       {
         path: 'comment',
         name: 'comment',
-        component: () => import('@/views/healthInfo/comment'),
+        component: () => import('@/views/healthInfo/comment.vue'),
         meta: { title: '资讯评论管理', icon: 'form', roles: ['管理员'] }
-      },
-      {
-        path: 'collect',
-        name: 'collect',
-        component: () => import('@/views/healthInfo/collect'),
-        meta: { title: '收藏资讯', icon: 'form' }
       },
       {
         path: 'sports',
         name: 'sports',
-        component: () => import('@/views/healthInfo/sports'),
+        component: () => import('@/views/healthInfo/sports.vue'),
         meta: { title: '运动资讯', icon: 'form', roles: ['普通用户'] }
       },
       {
         path: 'foods',
         name: 'foods',
-        component: () => import('@/views/healthInfo/foods'),
+        component: () => import('@/views/healthInfo/foods.vue'),
         meta: { title: '饮食推荐', icon: 'form', roles: ['普通用户'] }
-      }
-    ]
-  },
-
-  {
-    path: '/message',
-    component: Layout,
-    redirect: '/message/messageList',
-    name: 'message',
-    meta: { title: '留言', icon: 'message', roles: ['管理员'] },
-    children: [
+      },
       {
-        path: 'messageList',
-        name: 'messageList',
-        component: () => import('@/views/message/index'),
-        meta: { title: '留言管理', icon: 'form', roles: ['管理员'] }
+        path: 'collect',
+        name: 'collect',
+        component: () => import('@/views/healthInfo/collect.vue'),
+        meta: { title: '收藏资讯', icon: 'form' }
       }
     ]
   },
@@ -264,11 +242,40 @@ export const asyncRoutes = [
       {
         path: 'healthDataList',
         name: 'healthDataList',
-        component: () => import('@/views/healthData/index'),
-        meta: { title: '健康报告管理', icon: 'form' }
+        component: () => import('@/views/healthData/index.vue'),
+        meta: { title: '健康报告管理', icon: 'form', roles: ['管理员'] }
+      },
+      {
+        path: 'myHealthData',
+        name: 'myHealthData',
+        component: () => import('@/views/healthData/myHealthData.vue'),
+        meta: { title: '我的健康报告', icon: 'form', roles: ['普通用户'] }
       }
     ]
   },
+
+  {
+    path: '/message',
+    component: Layout,
+    redirect: '/message/messageList',
+    name: 'message',
+    meta: { title: '留言', icon: 'message' },
+    children: [
+      {
+        path: 'messageList',
+        name: 'messageList',
+        component: () => import('@/views/message/index.vue'),
+        meta: { title: '留言管理', icon: 'form', roles: ['管理员'] }
+      },
+      {
+        path: 'userMessage',
+        name: 'userMessage',
+        component: () => import('@/views/user/userMessage.vue'),
+        meta: { title: '我的留言', icon: 'form', roles: ['普通用户'] }
+      }
+    ]
+  },
+
   // 404 页面必须放置在最后一个页面
   { path: '*', redirect: '/404', hidden: true }
 ]
