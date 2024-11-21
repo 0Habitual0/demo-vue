@@ -24,10 +24,9 @@
     <div class="charts-header">
       <h2>健康指数统计</h2>
     </div>
-    <!--        <div class="charts-container">-->
-    <!--          <BarChart />-->
-    <!--          <LineChart chart-data="" />-->
-    <!--        </div>-->
+    <div class="charts-container">
+
+    </div>
     <div class="charts-footer">
       <p>@ 健康管理系统 2024</p>
     </div>
@@ -37,14 +36,10 @@
 <script>
 import service from '@/utils/request'
 import HealthInfoDetail from '@/views/healthInfo/components/healthInfoDetail.vue'
-// import { mapGetters } from 'vuex'
-// import BarChart from '@/views/dashboard/BarChart.vue'
-// import LineChart from '@/views/dashboard/LineChart.vue'
 
 export default {
   name: 'Dashboard',
   components: { HealthInfoDetail },
-  // components: { BarChart, LineChart },
   data() {
     return {
       healthInfoList: [],
