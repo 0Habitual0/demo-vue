@@ -17,12 +17,12 @@ import Layout from '@/layout'
  * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
+ roles: ['admin','editor']    control the page roles (you can set multiple roles)
+ title: 'title'               the name show in sidebar and breadcrumb (recommend set)
+ icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
+ breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
+ activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+ }
  */
 
 /**
@@ -157,79 +157,7 @@ export const constantRoutes = [
   //       meta: { title: 'External Link', icon: 'link' }
   //     }
   //   ]
-  // },
-  //
-  // {
-  //   path: '/user',
-  //   component: Layout,
-  //   redirect: '/user/userList',
-  //   name: 'user',
-  //   meta: { title: '用户', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'userList',
-  //       name: 'userList',
-  //       component: () => import('@/views/user/index'),
-  //       meta: { title: '用户管理', icon: 'form' }
-  //     },
-  //     {
-  //       path: 'userPersonal',
-  //       name: 'userPersonal',
-  //       component: () => import('@/views/user/userPersonal'),
-  //       meta: { title: '个人中心', icon: 'form' }
-  //     },
-  //     {
-  //       path: 'userMessage',
-  //       name: 'userMessage',
-  //       component: () => import('@/views/user/userMessage'),
-  //       meta: { title: '我的留言', icon: 'form' }
-  //     }
-  //   ]
-  // },
-  //
-  // {
-  //   path: '/healthInfo',
-  //   component: Layout,
-  //   redirect: '/healthInfo/sports',
-  //   name: 'healthInfo',
-  //   meta: { title: '健康资讯', icon: 'form' },
-  //   children: [
-  //     {
-  //       path: 'sports',
-  //       name: 'sports',
-  //       component: () => import('@/views/healthInfo/sports'),
-  //       meta: { title: '运动资讯管理', icon: 'form' }
-  //     },
-  //     {
-  //       path: 'foods',
-  //       name: 'foods',
-  //       component: () => import('@/views/healthInfo/foods'),
-  //       meta: { title: '饮食推荐管理', icon: 'form' }
-  //     },
-  //     {
-  //       path: 'comment',
-  //       name: 'comment',
-  //       component: () => import('@/views/healthInfo/comment'),
-  //       meta: { title: '资讯评论管理', icon: 'form' }
-  //     }
-  //   ]
-  // },
-  //
-  // {
-  //   path: '/message',
-  //   component: Layout,
-  //   redirect: '/message/messageList',
-  //   name: 'message',
-  //   meta: { title: '留言', icon: 'message' },
-  //   children: [
-  //     {
-  //       path: 'messageList',
-  //       name: 'messageList',
-  //       component: () => import('@/views/message/index'),
-  //       meta: { title: '留言管理', icon: 'form' }
-  //     }
-  //   ]
-  // },
+  // }
 ]
 
 /**
@@ -237,39 +165,77 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/studentinformation',
+    path: '/user',
     component: Layout,
+    redirect: '/user/userPersonal',
+    name: 'userPersonal',
+    meta: { title: '用户', icon: 'user' },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/message/index'),
-        meta: { title: '学生信息', icon: 'el-icon-s-check' }
+        path: 'userList',
+        name: 'userList',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', icon: 'form', roles: ['管理员'] }
+      },
+      {
+        path: 'userPersonal',
+        name: 'userPersonal',
+        component: () => import('@/views/user/userPersonal'),
+        meta: { title: '个人中心', icon: 'form' }
+      },
+      {
+        path: 'userMessage',
+        name: 'userMessage',
+        component: () => import('@/views/user/userMessage'),
+        meta: { title: '我的留言', icon: 'form', roles: ['普通用户'] }
       }
     ]
   },
+
   {
-    path: '/lecturerinformation',
+    path: '/healthInfo',
     component: Layout,
+    redirect: '/healthInfo/sports',
+    name: 'healthInfo',
+    meta: { title: '健康资讯', icon: 'form', roles: ['管理员'] },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/message/index'),
-        meta: { title: '讲师信息', icon: 'el-icon-s-custom', roles: ['管理员'] }
+        path: 'sports',
+        name: 'sports',
+        component: () => import('@/views/healthInfo/sports'),
+        meta: { title: '运动资讯管理', icon: 'form', roles: ['管理员'] }
+      },
+      {
+        path: 'foods',
+        name: 'foods',
+        component: () => import('@/views/healthInfo/foods'),
+        meta: { title: '饮食推荐管理', icon: 'form', roles: ['管理员'] }
+      },
+      {
+        path: 'comment',
+        name: 'comment',
+        component: () => import('@/views/healthInfo/comment'),
+        meta: { title: '资讯评论管理', icon: 'form', roles: ['管理员'] }
       }
     ]
   },
+
   {
-    path: '/coursemanage',
+    path: '/message',
     component: Layout,
-    meta: { roles: ['管理员'] },
+    redirect: '/message/messageList',
+    name: 'message',
+    meta: { title: '留言', icon: 'message', roles: ['管理员'] },
     children: [
       {
-        path: 'index',
+        path: 'messageList',
+        name: 'messageList',
         component: () => import('@/views/message/index'),
-        meta: { title: '课程管理', icon: 'el-icon-s-platform' }
+        meta: { title: '留言管理', icon: 'form', roles: ['管理员'] }
       }
     ]
   },
+
   // 404 页面必须放置在最后一个页面
   { path: '*', redirect: '/404', hidden: true }
 ]
