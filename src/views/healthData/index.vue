@@ -18,22 +18,22 @@
           <el-col :span="8">
             <el-form-item label="创建时间大于">
               <el-date-picker
-                v-model="params.createTimeAfter"
+                v-model="params.createAfter"
                 type="datetime"
                 placeholder="请选择时间"
                 format="yyyy-MM-dd HH:mm:ss"
-                value-format="yyyy-MM-ddTHH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
               />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="创建时间小于">
               <el-date-picker
-                v-model="params.createTimeBefore"
+                v-model="params.createBefore"
                 type="datetime"
                 placeholder="请选择时间"
                 format="yyyy-MM-dd HH:mm:ss"
-                value-format="yyyy-MM-ddTHH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
               />
             </el-form-item>
           </el-col>

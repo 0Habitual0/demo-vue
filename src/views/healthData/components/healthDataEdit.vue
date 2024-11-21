@@ -73,7 +73,7 @@ export default {
           { required: true, message: '请输入胆固醇', trigger: 'blur' },
           { type: 'number', message: '胆固醇必须是数字' }
         ]
-      },
+      }
     }
   },
   watch: {},
