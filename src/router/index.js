@@ -254,6 +254,21 @@ export const asyncRoutes = [
     ]
   },
 
+  {
+    path: '/healthData',
+    component: Layout,
+    redirect: '/healthData/healthDataList',
+    name: 'healthDataList',
+    meta: { title: '健康报告', icon: 'user' },
+    children: [
+      {
+        path: 'healthDataList',
+        name: 'healthDataList',
+        component: () => import('@/views/healthData/index'),
+        meta: { title: '健康报告管理', icon: 'form' }
+      }
+    ]
+  },
   // 404 页面必须放置在最后一个页面
   { path: '*', redirect: '/404', hidden: true }
 ]
