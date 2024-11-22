@@ -26,6 +26,7 @@
     </div>
     <div class="charts-container">
       <TrendChart :chart-data="trendChartData" />
+      <BarChart :char-data="barChartData" />
     </div>
     <div class="charts-footer">
       <p>@ 健康管理系统 2024</p>
@@ -37,16 +38,18 @@
 import service from '@/utils/request'
 import HealthInfoDetail from '@/views/healthInfo/components/healthInfoDetail.vue'
 import TrendChart from '@/views/dashboard/components/TrendChart.vue'
+import BarChart from '@/views/dashboard/components/BarChart.vue'
 
 export default {
   name: 'Dashboard',
-  components: { HealthInfoDetail, TrendChart },
+  components: { HealthInfoDetail, TrendChart, BarChart },
   data() {
     return {
       healthInfoList: [],
       showDetailDialog: false,
       data: {},
-      trendChartData: []
+      trendChartData: [],
+      barChartData: {}
     }
   },
   mounted() {
@@ -56,6 +59,7 @@ export default {
     init() {
       this.selectLatestHealthInfo()
       this.getTrendChartData()
+      this.getBarChartData()
     },
     selectLatestHealthInfo() {
       service.get('/healthInfo/selectLatest', this.formData).then(res => {
@@ -65,6 +69,11 @@ export default {
     getTrendChartData() {
       service.post('/healthData/trendChart', this.formData).then(res => {
         this.trendChartData = res.data
+      })
+    },
+    getBarChartData() {
+      service.post('/healthData/barChart', this.formData).then(res => {
+        this.barChartData = res.data
       })
     },
     showDetailDialogFunction(row) {
