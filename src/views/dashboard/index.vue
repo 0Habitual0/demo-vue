@@ -7,7 +7,7 @@
         <ul>
           <li v-for="healthInfoItem in healthInfoList" :key="healthInfoItem.id" @click="showDetailDialogFunction(healthInfoItem)">
             <img :src="healthInfoItem.titleImage" alt="news image">
-            <span>{{ healthInfoItem.title }}</span>
+            <span class="ellipsis">{{ healthInfoItem.title }}</span>
           </li>
         </ul>
       </div>
@@ -29,7 +29,7 @@
       <BarChart :char-data="barChartData" />
     </div>
     <div class="charts-footer">
-      <p>@ 健康管理系统 2024</p>
+      <p>@ 个人健康管理系统 2024</p>
     </div>
   </div>
 </template>
@@ -125,6 +125,15 @@ export default {
     width: 100px; /* 调整图片宽度 */
     height: 100px; /* 调整图片高度 */
     margin-bottom: 10px;
+  }
+
+  .latest-news .ellipsis {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%; /* 确保适应父容器宽度 */
+    text-align: center; /* 居中文字 */
   }
 
   .charts-header {

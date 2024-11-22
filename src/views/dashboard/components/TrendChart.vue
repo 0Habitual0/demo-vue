@@ -46,7 +46,7 @@ export default {
     setOptions(data) {
       const options = {
         title: {
-          text: '健康趋势图(每日平均值)'
+          text: ''
         },
         tooltip: {
           trigger: 'axis'

@@ -46,7 +46,7 @@ export default {
     setOptions(data) {
       const options = {
         title: {
-          text: '健康指标柱状图'
+          text: ''
         },
         tooltip: {
           trigger: 'axis',
