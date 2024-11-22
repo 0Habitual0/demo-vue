@@ -168,7 +168,7 @@ export const asyncRoutes = [
     path: '/user',
     component: Layout,
     redirect: '/user/userPersonal',
-    name: 'userPersonal',
+    name: 'user',
     meta: { title: '用户', icon: 'user' },
     children: [
       {
@@ -236,7 +236,7 @@ export const asyncRoutes = [
     path: '/healthData',
     component: Layout,
     redirect: '/healthData/healthDataList',
-    name: 'healthDataList',
+    name: 'healthData',
     meta: { title: '健康报告', icon: 'user' },
     children: [
       {

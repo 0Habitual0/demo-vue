@@ -51,12 +51,7 @@
 import service from '@/utils/request'
 
 export default {
-  props: {
-    data: {
-      type: Object,
-      required: true
-    }
-  },
+  props: {},
   data() {
     return {
       loading: false,
@@ -70,7 +65,8 @@ export default {
         tel: [{ required: true, message: '请输入电话号', trigger: 'blur' }],
         role: [{ required: true, message: '请选择角色', trigger: 'change' }],
         status: [{ required: true, message: '请选择状态', trigger: 'change' }]
-      }
+      },
+      data: {}
     }
   },
   watch: {},

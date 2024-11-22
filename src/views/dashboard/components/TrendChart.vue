@@ -7,16 +7,27 @@ import * as echarts from 'echarts'
 
 export default {
   name: 'TrendChart',
+  props: {
+    chartData: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
-      chart: null,
-      chartData: [
-        { date: '2024-11-01', 类型C: 820, 类型B: 620 },
-        { date: '2024-11-02', 类型A: 932, 类型B: 732 },
-        { date: '2024-11-03', 类型A: 901, 类型B: 701 },
-        { date: '2024-11-04', 类型A: 934, 类型B: 734 },
-        { date: '2024-11-05', 类型A: 1290, 类型B: 1090 }
-      ]
+      chart: null
+    }
+  },
+  watch: {
+    chartData: {
+      handler(newData) {
+        if (this.chart) {
+          this.setOptions(newData)
+        } else {
+          this.initChart()
+        }
+      },
+      deep: true
     }
   },
   mounted() {
@@ -30,36 +41,51 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$refs.chart)
-      this.setOptions()
+      this.setOptions(this.chartData)
     },
-    setOptions() {
+    setOptions(data) {
       const options = {
         title: {
-          text: '健康趋势图'
+          text: '健康趋势图(每日平均值)'
         },
         tooltip: {
           trigger: 'axis'
         },
         legend: {
-          data: ['类型A', '类型B']
+          data: ['肺活量(ml)', '血糖(mmol/L)', '血脂(mmol/L)', '血压(mmHg)', '胆固醇(mmol/L)']
         },
         xAxis: {
           type: 'category',
-          data: this.chartData.map(item => item.date)
+          data: data.map(item => item.date)
         },
         yAxis: {
           type: 'value'
         },
         series: [
           {
-            name: '类型A',
+            name: '肺活量(ml)',
             type: 'line',
-            data: this.chartData.map(item => item.类型A)
+            data: data.map(item => item.vitalCapacity)
           },
           {
-            name: '类型B',
+            name: '血糖(mmol/L)',
             type: 'line',
-            data: this.chartData.map(item => item.类型B)
+            data: data.map(item => item.bloodSugar)
+          },
+          {
+            name: '血脂(mmol/L)',
+            type: 'line',
+            data: data.map(item => item.bloodFat)
+          },
+          {
+            name: '血压(mmHg)',
+            type: 'line',
+            data: data.map(item => item.bloodPressure)
+          },
+          {
+            name: '胆固醇(mmol/L)',
+            type: 'line',
+            data: data.map(item => item.cholesterol)
           }
         ]
       }
@@ -69,5 +95,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
 </style>

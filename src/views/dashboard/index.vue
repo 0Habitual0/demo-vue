@@ -25,7 +25,7 @@
       <h2>健康指数统计</h2>
     </div>
     <div class="charts-container">
-      <TrendChart />
+      <TrendChart :chart-data="trendChartData" />
     </div>
     <div class="charts-footer">
       <p>@ 健康管理系统 2024</p>
@@ -45,7 +45,8 @@ export default {
     return {
       healthInfoList: [],
       showDetailDialog: false,
-      data: {}
+      data: {},
+      trendChartData: []
     }
   },
   mounted() {
@@ -54,10 +55,16 @@ export default {
   methods: {
     init() {
       this.selectLatestHealthInfo()
+      this.getTrendChartData()
     },
     selectLatestHealthInfo() {
       service.get('/healthInfo/selectLatest', this.formData).then(res => {
         this.healthInfoList = res.data
+      })
+    },
+    getTrendChartData() {
+      service.post('/healthData/trendChart', this.formData).then(res => {
+        this.trendChartData = res.data
       })
     },
     showDetailDialogFunction(row) {
